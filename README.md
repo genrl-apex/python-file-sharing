@@ -2,8 +2,8 @@
 
 ## A python based file hosting system that lets you store and server html/php files then serve them using python
 
-#!!!
-#Not fully working yet
+# !!!
+# Not fully working yet
 
 Database<br>
 - I would recommend using a <a href="http://mysql.com/">MySql</a> database as that is what i have been using
