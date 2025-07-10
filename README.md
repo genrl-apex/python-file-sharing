@@ -1,6 +1,6 @@
 # Python local file hosting system
 
-## A python based file hosting system that lets you store and server html/php files then serve them using python
+## A python based file hosting system that lets you store html/php files then serve them using python
 
 # !!! Not fully working yet
 
@@ -9,7 +9,7 @@
 How to create/Structure<br>
 - Make sure you have a running installation of your chosen database
 - Create a database with the relevant command for your sql database service
-- Then create a table using the command bellow
+- Then create a table using the command bellow (may not work with other sql database types)
 
 CREATE TABLE websites (
 id INT AUTO_INCREMENT PRIMARY KEY,
