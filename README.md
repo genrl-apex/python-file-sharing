@@ -5,7 +5,7 @@
 # !!! Not fully working yet
 
 ### Database<br>
-- I would recommend using a <a href="http://mysql.com/">MySql</a> database as that is what i have been using
+- I would recommend using a <a href="http://mysql.com/" target="_blank">MySql</a> database as that is what i have been using
 How to create/Structure<br>
 - Make sure you have a running installation of your chosen database
 - Create a database with the relevant command for your sql database service
@@ -19,4 +19,4 @@ file LONGBLOB NOT NULL,
 file_type ENUM('html', 'php') NOT NULL
 )
 
-Once your database has been created and your table is set up you will need to upt the relevant database credentials into the db_config dictionary at the top of the connect_db.py file
+Once your database has been created and your table is set up you will need to put the relevant database credentials into the db_config dictionary at the top of the connect_db.py file

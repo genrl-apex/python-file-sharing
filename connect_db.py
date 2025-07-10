@@ -12,7 +12,6 @@ db_config = {
 }
 
 
-
 def add_to_db(name, description, file_path, file_type):
     with open(file_path, "rb") as file:
         file_content = file.read()
