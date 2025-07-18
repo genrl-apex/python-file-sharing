@@ -1,14 +1,19 @@
-import mysql.connector
+#pip install PyMySQL
+import pymysql
+#pip install python-dotenv
 from dotenv import load_dotenv, dotenv_values
 import os
+from tkinter import filedialog
+import tkinter as tk
 
 load_dotenv()
 
+
 db_config = {
-    "host" : os.getenv("HOST"),
-    "user" : os.getenv("USER"),
-    "password" : os.getenv("PASSWORD"),
-    "database" : os.getenv("DATABASE")
+    "host" : os.getenv("DB_HOST", "localhost"),
+    "user" : os.getenv("DB_USER", "newuser"),
+    "password" : os.getenv("DB_PASSWORD", "password123"),
+    "database" : os.getenv("DB_NAME", "storage")
 }
 
 
@@ -16,17 +21,17 @@ def add_to_db(name, description, file_path, file_type):
     with open(file_path, "rb") as file:
         file_content = file.read()
     try:
-        conn = mysql.connector.connect(**db_config)
+        conn = pymysql.connect(**db_config)
         cursor = conn.cursor()
         print("Successfully connected to mysql database")
 
         cursor.execute("""
-                INSERT INTO websites (name, description, file, file_type)
+                INSERT INTO files (name, description, file, file_type)
                 VALUES (%s, %s, %s, %s)
             """, (name, description, file_content, file_type))
         conn.commit()
 
-    except mysql.connector.Error as err:
+    except pymysql.Error as err:
         print(f"There was an unexpected error connecting to the database: {err}")
     except FileNotFoundError:
         print(f"no file found at {file_path}")
@@ -34,27 +39,29 @@ def add_to_db(name, description, file_path, file_type):
         print(f"There was an unexpected error: {e}")
 
 
+#not currently being used
 def get_all_from_db(name, file_path):
     try:
-        conn = mysql.connector.connect(**db_config)
+        conn = pymysql.connect(**db_config)
         cursor = conn.cursor()
         print("Successfully connected to mysql database")
 
         cursor.execute(""" """) #need to add statement
         conn.commit()
 
-    except mysql.connector.Error as err:
+    except pymysql.Error as err:
         print(f"There was an unexpected error connecting to the database: {err}")
     except FileNotFoundError:
         print(f"no file found at {file_path}")
     except Exception as e:
         print(f"There was an unexpected error: {e}")
-    
+#########################################
 
-#need to add statements/output for these
-def get_files():
-    pass
-
-def host_files():
-    get_files()
-    #need to add the hosting
+name = input("Enter name: ")
+description = input("Enter description: ")
+file_path = filedialog.askopenfilename(
+        title="Select File",
+        filetypes=[("All Files", "*.*")]
+    )
+file_type = os.path.splitext(file_path)[1]
+add_to_db(name, description, file_path, file_type)
