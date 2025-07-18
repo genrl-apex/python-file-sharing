@@ -11,12 +11,12 @@ How to create/Structure<br>
 - Create a database with the relevant command for your sql database service
 - Then create a table using the command bellow (may not work with other sql database types)
 
-CREATE TABLE websites (
-id INT AUTO_INCREMENT PRIMARY KEY,
-name varchar(64) NOT NULL UNIQUE,
-description varchar(255),
-file LONGBLOB NOT NULL,
-file_type ENUM('html', 'php') NOT NULL
-)
+CREATE TABLE files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(255),
+    file LONGBLOB NOT NULL,
+    file_type VARCHAR(50) NOT NULL
+);
 
 Once your database has been created and your table is set up you will need to put the relevant database credentials into the db_config dictionary at the top of the connect_db.py file
