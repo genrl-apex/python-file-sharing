@@ -1,64 +1,68 @@
+#pip install PyMySQL
+import pymysql
+#pip install python-dotenv
+from dotenv import load_dotenv, dotenv_values
+import os
+from tkinter import filedialog
 import tkinter as tk
-import connect_db as con
 
-root = tk.Tk()
-root.geometry("600x500")
-root.configure(bg="#212121")
-
-tk.Label(root,
-         text="Please enter the name of the site you want to visit",
-         font=("Helvetica", "16"),
-         bg="#212121",
-         fg="white"
-).place(relx=0.5, y=40, anchor="center")
-
-tk.Entry(root,
-         width="40",
-         font=("Helvetica", "16"),
-         bg="#404040",
-         fg="white",
-         relief="flat"
-).place(relx=0.5, y=80, anchor="center")
-
-tk.Button(
-    root,
-    text="Enter",
-    width="20",
-    font=("Helvetica", "12"),
-    bg="#1f538d",
-    relief="flat",
-    activebackground="#14375e",
-    activeforeground="black",
-    command=con.host_files
-).place(relx=0.5, y=120, anchor="center")
-
-frame = tk.Frame(
-    root,
-    bg="#212121"
-)
-frame.place(relx=0.5, rely=0.6, anchor="center", width=500, height=250)
+load_dotenv()
 
 
-textbox = tk.Text(
-    frame,
-    width="60",
-    height="15",
-    font=("Helvetica", "15"),
-    bg="#404040",
-    fg="white",
-    insertbackground="white",
-    relief="flat",
-)
+db_config = {
+    "host" : os.getenv("DB_HOST", "localhost"),
+    "user" : os.getenv("DB_USER", "newuser"),
+    "password" : os.getenv("DB_PASSWORD", "password123"),
+    "database" : os.getenv("DB_NAME", "storage")
+}
 
 
-scrollbar = tk.Scrollbar(
-    frame,
-    command=textbox.yview
-)
-textbox.config(yscrollcommand=scrollbar.set)
 
-scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-textbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-textbox["state"] = "normal"
+def add_to_db(name, description, file_path, file_type):
+    with open(file_path, "rb") as file:
+        file_content = file.read()
+    try:
+        conn = pymysql.connect(**db_config)
+        cursor = conn.cursor()
+        print("Successfully connected to mysql database")
 
-root.mainloop()
+        cursor.execute("""
+                INSERT INTO files (name, description, file, file_type)
+                VALUES (%s, %s, %s, %s)
+            """, (name, description, file_content, file_type))
+        conn.commit()
+
+    except pymysql.Error as err:
+        print(f"There was an unexpected error connecting to the database: {err}")
+    except FileNotFoundError:
+        print(f"no file found at {file_path}")
+    except Exception as e:
+        print(f"There was an unexpected error: {e}")
+
+
+#not currently being used
+def get_all_from_db(name, file_path):
+    try:
+        conn = pymysql.connect(**db_config)
+        cursor = conn.cursor()
+        print("Successfully connected to mysql database")
+
+        cursor.execute(""" """) #need to add statement
+        conn.commit()
+
+    except pymysql.Error as err:
+        print(f"There was an unexpected error connecting to the database: {err}")
+    except FileNotFoundError:
+        print(f"no file found at {file_path}")
+    except Exception as e:
+        print(f"There was an unexpected error: {e}")
+#########################################
+
+name = input("Enter name: ")
+description = input("Enter description: ")
+file_path = filedialog.askopenfilename(
+        title="Select File",
+        filetypes=[("All Files", "*.*")]
+    )
+file_type = os.path.splitext(file_path)[1]
+add_to_db(name, description, file_path, file_type)
