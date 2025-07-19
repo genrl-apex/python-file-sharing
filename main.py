@@ -7,11 +7,14 @@ root = tk.Tk()
 root.geometry("600x500")
 root.configure(bg="#212121")
 
+ip = input("ip: ")
+
 db_config = {
-    "host" : os.getenv("DB_HOST", "localhost"),
-    "user" : os.getenv("DB_USER", "newuser"),
-    "password" : os.getenv("DB_PASSWORD", "password123"),
-    "database" : os.getenv("DB_NAME", "storage")
+    "host": os.getenv("DB_HOST", f"{ip}"),
+    "port": int(os.getenv("DB_PORT", 25565)),
+    "user": os.getenv("DB_USER", "user"),
+    "password": os.getenv("DB_PASSWORD", "password"),
+    "database": os.getenv("DB_NAME", "files")
 }
 
 def list_items():
