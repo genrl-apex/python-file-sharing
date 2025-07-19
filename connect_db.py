@@ -6,15 +6,19 @@ import os
 from tkinter import filedialog
 import tkinter as tk
 
-load_dotenv()
+#load_dotenv()
 
+
+ip = input("ip: ")
 
 db_config = {
-    "host" : os.getenv("DB_HOST", "localhost"),
-    "user" : os.getenv("DB_USER", "newuser"),
-    "password" : os.getenv("DB_PASSWORD", "password123"),
-    "database" : os.getenv("DB_NAME", "storage")
+    "host": os.getenv("DB_HOST", f"{ip}"),
+    "port": int(os.getenv("DB_PORT", 25565)),
+    "user": os.getenv("DB_USER", "user"),
+    "password": os.getenv("DB_PASSWORD", "password"),
+    "database": os.getenv("DB_NAME", "files")
 }
+
 
 
 def add_to_db(name, description, file_path, file_type):
