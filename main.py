@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog
+from cryptography.fernet import Fernet
 import pymysql
 import os
+
 
 root = tk.Tk()
 root.geometry("600x500")
@@ -10,11 +12,11 @@ root.configure(bg="#212121")
 ip = input("ip: ")
 
 db_config = {
-    "host": os.getenv("DB_HOST", f"{ip}"),
-    "port": int(os.getenv("DB_PORT", 25565)),
-    "user": os.getenv("DB_USER", "user"),
-    "password": os.getenv("DB_PASSWORD", "password"),
-    "database": os.getenv("DB_NAME", "files")
+    "host": f"{ip}",
+    "port": 25565,
+    "user": "user",
+    "password": f"{Fernet("_dkff6Kov3V1Olvq8C4AO4EaYFPoXlvQONyH-dUdOM8=".encode()).decrypt("gAAAAABoe3Pq4ND3CITZpkrMvGForJUKwSLJevOzSlOqj4G8eyXkEdCKzhYiBeRddkkjClaGb1e2nqSiyI-ilM4c6G8xGdQANQ==r4IFiHw==".encode()).decode()}",
+    "database": "files"
 }
 
 def list_items():
@@ -26,7 +28,6 @@ def list_items():
 
     cursor.close()
     conn.close()
-
     return results
 
 
