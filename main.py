@@ -1,35 +1,19 @@
 import tkinter as tk
 from tkinter import filedialog
-from cryptography.fernet import Fernet
+#from cryptography.fernet import Fernet
 import pymysql
 import os
+from connect_db import get_config, get_all_from_db, add_to_db
 
+db_config = get_config()
+
+add_to_db(db_config)
+add_to_db(db_config)
+add_to_db(db_config)
 
 root = tk.Tk()
 root.geometry("600x500")
 root.configure(bg="#212121")
-
-ip = input("ip: ")
-
-db_config = {
-    "host": f"{ip}",
-    "port": 25565,
-    "user": "user",
-    "password": f"{Fernet("_dkff6Kov3V1Olvq8C4AO4EaYFPoXlvQONyH-dUdOM8=".encode()).decrypt("gAAAAABoe3Pq4ND3CITZpkrMvGForJUKwSLJevOzSlOqj4G8eyXkEdCKzhYiBeRddkkjClaGb1e2nqSiyI-ilM4c6G8xGdQANQ==r4IFiHw==".encode()).decode()}",
-    "database": "files"
-}
-
-def list_items():
-    conn = pymysql.connect(**db_config)
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM files")
-    results = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-    return results
-
 
 tk.Label(root,
          text="Access the database...",
@@ -55,6 +39,7 @@ tk.Button(
     relief="flat",
     activebackground="#14375e",
     activeforeground="black",
+    #command=open_file() need to create open_file(). open file needs to check if the file is hostable (as stored in db) then if it is a html file ask if they want it hosted as a site. if yes host like did with eaglecraft. if no put it in a text box like normal
 ).place(relx=0.5, y=120, anchor="center")
 
 frame = tk.Frame(
@@ -75,17 +60,16 @@ textbox = tk.Text(
     relief="flat",
 )
 def place_in_da_textbox():
-    items = list_items()
-    
+    items = get_all_from_db(db_config)
 
     for idx, item in enumerate(items, start=1):
         name = item[1] or ''
         extension = item[4] or ''
         description = item[2] or ''
 
-        name_with_ext = f"{name}{extension}"                                           #
-        formatted_line = f"{idx}) {name_with_ext}  -   description: {description}\n"   #   <--- chatgpt may hav intervened here
-        textbox.insert(tk.END, formatted_line)                                         #
+        name_with_ext = f"{name}{extension}"
+        formatted_line = f"{idx}) {name_with_ext}  -   description: {description}\n"
+        textbox.insert(tk.END, formatted_line)
 
 #no interacting with text box          at all.
     textbox.config(state="disabled")
@@ -143,6 +127,7 @@ def download_file(name_with_ext):
 
     except Exception as e:
         print(f"Error: {e}")
+
 
 place_in_da_textbox()
 

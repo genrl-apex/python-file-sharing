@@ -16,7 +16,14 @@ CREATE TABLE files (
     name VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR(255),
     file LONGBLOB NOT NULL,
-    file_type VARCHAR(50) NOT NULL
+    file_type VARCHAR(50) NOT NULL,
+    hostable INT DEFAULT 0
 );
 
-Once your database has been created and your table is set up you will need to put the relevant database credentials into the db_config dictionary at the top of the connect_db.py file
+- name should be the name of the file you are saving
+- description should be a short description of the site
+- file would be the file you choose
+- file_type will be done worked out by the program
+- if the file is html hostable will be = 1
+
+Once the database setup is complete change the port/other credentials in connect_db.py if needed
