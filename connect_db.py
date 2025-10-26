@@ -145,8 +145,6 @@ def open_in_txt_box():
     print("this will get added i promise :)")
 
 def open_file(db_config, name_with_ext):
-    print(db_config)
-    print(name_with_ext)
     try:
         conn = pymysql.connect(**db_config)
         cursor = conn.cursor()
@@ -156,9 +154,10 @@ def open_file(db_config, name_with_ext):
         cursor.execute("SELECT file, file_type, hostable FROM files WHERE name=%s AND file_type=%s", (name, ext))
         result = cursor.fetchone()
         file_data, file_type, hostable = result
-        content = file_data.decode("utf-8")
-
+        
         if hostable == 1:
+            content = file_data.decode("utf-8")
+
             host = messagebox.askokcancel("Question", "Do you want to host this html file as a website")
             if host == True:
 
@@ -168,7 +167,7 @@ def open_file(db_config, name_with_ext):
                     httpd.serve_forever()
 
             else:
-                print("Not hosting file")
+                print("something went wrong hosting file")
         else:
             open_in_txt_box()
 

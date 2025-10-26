@@ -11,7 +11,6 @@ def handle_open_file():
         items = get_all_from_db(db_config)
 
         if 1 <= index and index <= len(items):
-            print("looping")
             for idx, item in enumerate(items, start=1):
                 if idx == index:
                     name = item[1] or ''
@@ -26,8 +25,8 @@ def handle_open_file():
         else:
             print("Invalid input. Please enter a valid number.")
 
-    except ValueError:
-        print("Invalid input. Please enter a valid number.")
+    except Exception as e:
+        print(e)
 
 
 root = tk.Tk()
