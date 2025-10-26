@@ -1,0 +1,8 @@
+CREATE TABLE files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(255),
+    file LONGBLOB NOT NULL,
+    file_type VARCHAR(50) NOT NULL,
+    hostable INT DEFAULT 0
+);
