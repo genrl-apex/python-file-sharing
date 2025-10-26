@@ -1,16 +1,27 @@
-# Python local file hosting system
+# Python file sharing system
 
-## A python based file hosting system that lets you store html/php files then serve them using python
+## A file sharing system that lets you store files then share/serve them using python
 
-# !!! Not fully working yet
+### About this project
 
-### Database<br>
-- I would recommend using a <a href="http://mysql.com/" target="_blank">MySql</a> database as that is what i have been using
-How to create/Structure<br>
-- Make sure you have a running installation of your chosen database
-- Create a database with the relevant command for your sql database service
-- Then create a table using the command bellow (may not work with other sql database types)
+this project is a python based app that reads from and displays files from a database that can then be previewed, downloaded and in some cases hosted on localhost. this is a great way to share files between friends, family or even a work environment
 
+
+### Installation
+---
+
+> **Notice**
+> You will need to setup your own database, specifically a MySql one so if you haven't already install the latest community version from their [`website`](http://mysql.com/)
+
+#### Method 1: included file
+
+run db_setup.sql to quickly setup the database
+[`db_setup.sql`](./db_setup.sql)
+
+
+#### Method 2: setup directly with statement
+
+```bash
 CREATE TABLE files (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
@@ -19,11 +30,4 @@ CREATE TABLE files (
     file_type VARCHAR(50) NOT NULL,
     hostable INT DEFAULT 0
 );
-
-- name should be the name of the file you are saving
-- description should be a short description of the site
-- file would be the file you choose
-- file_type will be done worked out by the program
-- if the file is html hostable will be = 1
-
-Once the database setup is complete change the port/other credentials in connect_db.py if needed
+```
