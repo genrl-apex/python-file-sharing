@@ -3,7 +3,6 @@ from connect_db import get_config, get_all_from_db, add_to_db, download_file, op
 
 db_config = get_config()
 
-
 def handle_open_file():
     index = entry.get()
     index = int(index)
